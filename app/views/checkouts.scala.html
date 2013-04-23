@@ -154,31 +154,12 @@
                 <div class="step-body">
                     <div id="payment-networks" class="show">
                         @* Loading asynchronously after last step submit *@
-
-                        @* PayForMe payment form *@
-                        <div class="well" id="form-billing-method">
-                            <legend>Pay For Me</legend>
-                            @defining(payForMeForm.field("name").value) { name =>
-                                @form.error("payforme-name")
-                                <div class="input-prepend">
-                                    <span class="add-on">Who am I?</span>
-                                    <input class="input-large" id="payforme-name" name="payforme-name" type="text" placeholder="Your name" required>
-                                </div>
-                            }
-                            @defining(payForMeForm.field("email").value) { email =>
-                                @form.error("payforme-email")
-                                <div class="input-prepend">
-                                    <span class="add-on">Who needs to pay it?</span>
-                                    <input class="input-large" id="payforme-email" name="payforme-email" type="text" placeholder="Email address" required>
-                                </div>
-                            }
-                        </div>
+                        @helper.paymentMethods(payForMeForm)
                     </div>
                     <div class="hide">
                         <ul id="billing-method-summary" class="form-summary">
                             <li>
-                                <span data-form="network" class="network">
-                                </span>
+                                <span data-form="network" class="network"></span>
                             </li>
                         </ul>
                     </div>

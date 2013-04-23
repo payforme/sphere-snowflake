@@ -133,6 +133,12 @@ $ ->
         )
     )
 
+    # Select Payment Method
+    $("#payment-networks input[type=radio]").change (evt)->
+      value = $(evt.target).val()
+      $("*[data-payment-view]").hide()
+      container = $("*[data-payment-view=#{value}]").toggle()
+
     # Bind billing 'next step' click event to 'validate form' and 'next step' functionality
     checkoutBilling.find('.btn-next').click( ->
         form = $('#form-billing-method')
