@@ -152,6 +152,8 @@
                 <div class="step-body">
                     <div id="payment-networks" class="show">
                         @* Loading asynchronously after last step submit *@
+
+                        @* Custom payment methods (actually fake for demo purposes, just the 'PayForMe' works) *@
                         @helper.paymentMethods(checkoutId, payForMeForm)
                     </div>
                     <div class="hide">

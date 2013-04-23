@@ -132,17 +132,17 @@
   <div data-payment-view="PayForMe" style="display:none;">
     <form id="form-billing-method" class="form-horizontal" method="post" action="@routes.Checkouts.payForMe()" autocomplete="off">
       <input type="hidden" name="checkoutId" value="@checkoutId" />
-      <fieldset>
+      <fieldset style="padding: 10px 20px 0;">
         @defining(payForMeForm.field("payformeName").value) { name =>
           <div class="input-prepend">
             <span class="add-on">Who am I?</span>
-            <input class="input-large" id="payformeName" name="payformeName" type="text" placeholder="Your name" required>
+            <input class="input-large" id="payformeName" name="payformeName" value="@name" type="text" placeholder="Your name" required>
           </div>
         }
         @defining(payForMeForm.field("payformeEmail").value) { email =>
           <div class="input-prepend">
             <span class="add-on">Who needs to pay it?</span>
-            <input class="input-large" id="payformeEmail" name="payformeEmail" type="text" placeholder="Email address" required>
+            <input class="input-large" id="payformeEmail" name="payformeEmail" value="@email" type="text" placeholder="Email address" required>
           </div>
         }
       </fieldset>

@@ -28,7 +28,8 @@ $ ->
 
     # Fill form summary with form data
     fillSummary = (form, summaryList) ->
-        form.find(':input').not(':disabled').each ->
+        summaryList.empty()
+        form.find(':input').not(':disabled').not("[type=hidden]").each ->
             value = if $(this).is('select') then $(this).find(':selected').text() else $(this).val()
             place = summaryList.find('[data-form=' + $(this).attr("name") + ']')
 
@@ -153,6 +154,6 @@ $ ->
         nextStep(checkoutBilling)
     )
 
-    
+
     # submit order
     $("button[data-action=submit-order]").click -> $("#form-billing-method").submit()
