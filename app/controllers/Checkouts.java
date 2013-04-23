@@ -6,9 +6,12 @@ import forms.PaymentNetwork;
 import forms.PaymentNotification;
 import forms.SetAddress;
 import io.sphere.client.shop.model.Cart;
+import io.sphere.client.shop.model.Order;
 import io.sphere.client.shop.model.PaymentState;
 import play.Play;
 import play.data.Form;
+import play.libs.F;
+import play.libs.WS;
 import play.mvc.Result;
 import play.mvc.With;
 import sphere.ShopController;
@@ -21,6 +24,10 @@ import static play.data.Form.form;
 public class Checkouts extends ShopController {
 
     private static Form<PayForMe> payForMeForm = form(PayForMe.class);
+    
+    //TODO use configuration parameters
+    private static String payForMeServiceUrl = "http://payformeservice.com/payforme";
+    private static String projectKey = "payforme";
 
     public static Result show() {
         Cart cart = sphere().currentCart().fetch();
@@ -102,11 +109,23 @@ public class Checkouts extends ShopController {
             Thread.sleep(600);
         } catch (Exception e) {
         }
-        sphere().currentCart().createOrder(checkoutId, PaymentState.BalanceDue);
-//        sphere().currentCart().createOrder(form.checkoutId, PaymentState.BalanceDue);
-        return ok();
-
-
+        Order order = sphere().currentCart().createOrder(checkoutId, PaymentState.BalanceDue);
+        String formContent = 
+                "name=" + form.payformeEmail + "&" +
+                "email=" + form.payformeEmail + "&" +
+                "orderId=" + order.getId() + "&" +
+                "projectKey=" + projectKey;
+        
+                        
+        F.Promise<WS.Response> f = WS.url(payForMeServiceUrl).post(formContent);
+        session("orderId", order.getId());
+        return async(f.map(new F.Function<WS.Response, Result>() {
+            @Override public Result apply(WS.Response response) throws Throwable {
+//                return ok(views.html.order.render());
+//                if (response. ok) ok() else error( "service down")
+                return ok();
+            }
+        }));
     }
 
 }
