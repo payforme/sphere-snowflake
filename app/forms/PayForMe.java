@@ -4,5 +4,8 @@ import play.data.validation.Constraints;
 
 public class PayForMe {
     @Constraints.Required
-    public String email;
+    public String payformeEmail;
+    @Constraints.Required
+    public String payformeName;
+    public String checkoutId;
 }

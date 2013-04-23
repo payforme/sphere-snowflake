@@ -123,7 +123,7 @@ $ ->
             dataType: 'html'
         .done( ->
             # Load payment networks once we have shipping information
-            loadPaymentNetworks($('#payment-networks'))
+            #loadPaymentNetworks($('#payment-networks'))
 
             # Fill form summary data
             fillSummary(form, $('#shipping-address-summary'))
@@ -152,3 +152,7 @@ $ ->
         # Go to next section
         nextStep(checkoutBilling)
     )
+
+    
+    # submit order
+    $("button[data-action=submit-order]").click -> $("#form-billing-method").submit()

@@ -90,16 +90,20 @@ public class Checkouts extends ShopController {
     }
 
     public static Result payForMe() {
-//        PayForMe values = payForMeForm.bindFromRequest().get();
-//        String checkoutSummaryId = new DynamicForm().bindFromRequest().get("checkout-summary-id");
+        Form<PayForMe> payForMeForm = form(PayForMe.class).bindFromRequest();
+        if (payForMeForm.hasErrors()){
+            return badRequest();
+        }
+        PayForMe form = payForMeForm.get();
+                
+        play.Logger.info(form.checkoutId);
         String checkoutId = sphere().currentCart().createCheckoutSummaryId();
-
         try {
             Thread.sleep(600);
         } catch (Exception e) {
-
         }
         sphere().currentCart().createOrder(checkoutId, PaymentState.BalanceDue);
+//        sphere().currentCart().createOrder(form.checkoutId, PaymentState.BalanceDue);
         return ok();
 
 

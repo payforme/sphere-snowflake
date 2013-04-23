@@ -1,4 +1,4 @@
-@(payForMeForm: Form[PayForMe])
+@(checkoutId: String, payForMeForm: Form[PayForMe])
 <div class="well well-small">
   <label class="radio">
     <input type="radio" class="inline" name="paymentmethod" value="PayoneCC">
@@ -6,7 +6,7 @@
     <div name="description">Payment with credit card.</div>
   </label>
   <div data-payment-view="PayoneCC" style="display: none;">
-    <form class="form-horizontal" method="POST" autocomplete="on">
+    <form class="form-horizontal"  autocomplete="on">
       <fieldset>
         <div class="control-group">
           <label class="control-label" for="cardholder">Card owner name</label>
@@ -130,18 +130,19 @@
     <div name="description">Let someone else pay for you.</div>
   </label>
   <div data-payment-view="PayForMe" style="display:none;">
-    <form id="form-billing-method" class="form-horizontal">
+    <form id="form-billing-method" class="form-horizontal" method="post" action="@routes.Checkouts.payForMe()" autocomplete="off">
+      <input type="hidden" name="checkoutId" value="@checkoutId" />
       <fieldset>
-        @defining(payForMeForm.field("name").value) { name =>
+        @defining(payForMeForm.field("payformeName").value) { name =>
           <div class="input-prepend">
             <span class="add-on">Who am I?</span>
-            <input class="input-large" id="payforme-name" name="payforme-name" type="text" placeholder="Your name" required>
+            <input class="input-large" id="payformeName" name="payformeName" type="text" placeholder="Your name" required>
           </div>
         }
-        @defining(payForMeForm.field("email").value) { email =>
+        @defining(payForMeForm.field("payformeEmail").value) { email =>
           <div class="input-prepend">
             <span class="add-on">Who needs to pay it?</span>
-            <input class="input-large" id="payforme-email" name="payforme-email" type="text" placeholder="Email address" required>
+            <input class="input-large" id="payformeEmail" name="payformeEmail" type="text" placeholder="Email address" required>
           </div>
         }
       </fieldset>
