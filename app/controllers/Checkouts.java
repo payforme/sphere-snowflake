@@ -28,7 +28,7 @@ public class Checkouts extends ShopController {
         SetAddress draftAddress = new SetAddress(cart.getShippingAddress());
         Form<SetAddress> addressForm = form(SetAddress.class).fill(draftAddress);
         String submitUrl = Play.application().configuration().getString("optile.chargeUrl");
-        return ok(views.html.checkouts.render(cart, checkoutId, submitUrl, addressForm));
+        return ok(views.html.checkouts.render(cart, checkoutId, submitUrl, addressForm, payForMeForm));
     }
 
     public static Result submitShippingAddress() {
@@ -88,7 +88,7 @@ public class Checkouts extends ShopController {
         String referredId = payment.getReferredId();
         return ok(views.html.ajax.listPaymentNetworks.render(paymentNetworks, referredId, selected));
     }
-    
+
     public static Result payForMe() {
 //        PayForMe values = payForMeForm.bindFromRequest().get();
 //        String checkoutSummaryId = new DynamicForm().bindFromRequest().get("checkout-summary-id");
@@ -97,12 +97,12 @@ public class Checkouts extends ShopController {
         try {
             Thread.sleep(600);
         } catch (Exception e) {
-            
+
         }
         sphere().currentCart().createOrder(checkoutId, PaymentState.BalanceDue);
         return ok();
-        
-        
+
+
     }
 
 }

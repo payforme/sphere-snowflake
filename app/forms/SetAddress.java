@@ -21,7 +21,6 @@ public class SetAddress {
     @Constraints.Email(message = "Invalid value for email")
     public String email;
 
-    @Constraints.Required(message = "Phone required")
     public String phone;
 
     public String mobile;
