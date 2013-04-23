@@ -1,0 +1,79 @@
+@(order: Order)
+
+@main("Checkout", "checkout"){
+  <div class="navigation">
+    @helper.topNavigation()
+  </div>
+}{
+  @if(order != null){
+    <div id="cart">
+      <div id="cart-cart" class="clearfix">
+        <div class="step-header">
+          <h2>Your order has been processed</h2>
+        </div>
+        <div class="step-body">
+          <ul class="cart-content unstyled">
+            @for(item <- order.getLineItems) {
+            <li class="item-line">
+              <div class="item-container clearfix">
+                <div class="item-picture">
+                  <img src="@item.getVariant.getFeaturedImage.getSize(ImageSize.SMALL).getUrl" alt="@item.getProductName" />
+                </div>
+                <div class="item-description">
+                  <div class="item-main">
+                    <ul class="item-action">
+                      <li class="item-price">
+                        @item.getPrice.getValue
+                      </li>
+                      <li class="item-quantity">
+                        <fieldset>
+                          <input type="number" name="quantity" min="1" max="10" value="@item.getQuantity" data-item="@item.getId" class="input-mini" />
+                        </fieldset>
+                      </li>
+                      <li class="item-total-price">
+                        <span id="item-total-price-@item.getId">@item.getTotalPrice</span>
+                      </li>
+                    </ul>
+                    <div class="item-name">
+                      <h5>@item.getProductName</h5>
+                    </div>
+                  </div>
+                  <div class="item-detail">
+                    <ul class="unstyled">
+                    @for(attribute <- item.getVariant.getAttributes) {
+                      <li><strong>@capitalizeInitials(attribute.getName):</strong> @attribute.getString</li>
+                    }
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </li>
+            }
+          </ul>
+        </div>
+        <div id="cart-footer" class="footer">
+          <div id="order-summary" class="order-summary right">
+            <ul class="unstyled">
+              <li>
+                  Item total <span>@order.getTaxedPrice.getTotalNet</span>
+              </li>
+              <li>
+                  @for(tax <- order.getTaxedPrice.getTaxPortions) {
+                  Tax @getPercentage(tax.getRate) % <span>@tax.getAmount</span>
+                  }
+              </li>
+              <li class="total">
+                  Total <span>@order.getTaxedPrice.getTotalGross</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  } else {
+    <h2>There are no orders to show.</h2>
+  }
+}{
+
+
+}

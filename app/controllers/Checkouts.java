@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.actions.Authorization;
+import com.google.common.base.Optional;
 import forms.PayForMe;
 import forms.PaymentNetwork;
 import forms.PaymentNotification;
@@ -24,7 +25,7 @@ import static play.data.Form.form;
 public class Checkouts extends ShopController {
 
     private static Form<PayForMe> payForMeForm = form(PayForMe.class);
-    
+
     //TODO use configuration parameters
     private static String payForMeServiceUrl = "http://payformeservice.com/payforme";
     private static String projectKey = "payforme";
@@ -66,11 +67,16 @@ public class Checkouts extends ShopController {
         return ok();
     }
 
-    @With(Authorization.class)
     public static Result success() {
-        flash("success", "Your payment has been processed, thank you for shopping with us!");
-        // TODO Redirect to somewhere
-        return Categories.home(1);
+        String orderId = session("orderId");
+        Order lastOrder = null;
+        if (orderId != null) {
+          Optional<Order> order = sphere().orders.byId(orderId).fetch();
+          if (order.isPresent()) {
+            lastOrder = order.get();
+          }
+        }
+        return ok(views.html.checkoutsSuccess.render(lastOrder));
     }
 
     @With(Authorization.class)
@@ -102,30 +108,33 @@ public class Checkouts extends ShopController {
             return badRequest();
         }
         PayForMe form = payForMeForm.get();
-                
+
         play.Logger.info(form.checkoutId);
         String checkoutId = sphere().currentCart().createCheckoutSummaryId();
         try {
+            // TODO: ugly hack, need to do it in order to have a valid `checkoutId`
             Thread.sleep(600);
         } catch (Exception e) {
         }
         Order order = sphere().currentCart().createOrder(checkoutId, PaymentState.BalanceDue);
-        String formContent = 
+        session("orderId", order.getId());
+        return redirect(controllers.routes.Checkouts.success());
+        /*String formContent =
                 "name=" + form.payformeEmail + "&" +
                 "email=" + form.payformeEmail + "&" +
                 "orderId=" + order.getId() + "&" +
                 "projectKey=" + projectKey;
-        
-                        
+
+
         F.Promise<WS.Response> f = WS.url(payForMeServiceUrl).post(formContent);
         session("orderId", order.getId());
         return async(f.map(new F.Function<WS.Response, Result>() {
             @Override public Result apply(WS.Response response) throws Throwable {
 //                return ok(views.html.order.render());
-//                if (response. ok) ok() else error( "service down")
+//                  if (response. ok) ok() else error( "service down")
                 return ok();
             }
-        }));
+        }));*/
     }
 
 }
