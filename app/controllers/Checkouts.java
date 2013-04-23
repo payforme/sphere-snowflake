@@ -24,17 +24,12 @@ import static play.data.Form.form;
 
 public class Checkouts extends ShopController {
 
-    private static Form<PayForMe> payForMeForm = form(PayForMe.class);
-
-    //TODO use configuration parameters
-    private static String payForMeServiceUrl = "http://payformeservice.com/payforme";
-    private static String projectKey = "payforme";
-
     public static Result show() {
         Cart cart = sphere().currentCart().fetch();
         String checkoutId = sphere().currentCart().createCheckoutSummaryId();
         SetAddress draftAddress = new SetAddress(cart.getShippingAddress());
         Form<SetAddress> addressForm = form(SetAddress.class).fill(draftAddress);
+        Form<PayForMe> payForMeForm = form(PayForMe.class);
         String submitUrl = Play.application().configuration().getString("optile.chargeUrl");
         return ok(views.html.checkouts.render(cart, checkoutId, submitUrl, addressForm, payForMeForm));
     }
@@ -118,23 +113,26 @@ public class Checkouts extends ShopController {
         }
         Order order = sphere().currentCart().createOrder(checkoutId, PaymentState.BalanceDue);
         session("orderId", order.getId());
-        return redirect(controllers.routes.Checkouts.success());
-        /*String formContent =
-                "name=" + form.payformeEmail + "&" +
+
+        // Notifies PayForMe WS
+        String formContent =
+                "name=" + form.payformeName + "&" +
                 "email=" + form.payformeEmail + "&" +
                 "orderId=" + order.getId() + "&" +
-                "projectKey=" + projectKey;
+                "projectKey=" + Payment.PAYFORME_KEY;
 
-
-        F.Promise<WS.Response> f = WS.url(payForMeServiceUrl).post(formContent);
-        session("orderId", order.getId());
+        F.Promise<WS.Response> f = WS.url(Payment.PAYFORME_URL)
+                .setContentType("application/x-www-form-urlencoded; charset=utf-8")
+                .post(formContent);
         return async(f.map(new F.Function<WS.Response, Result>() {
             @Override public Result apply(WS.Response response) throws Throwable {
-//                return ok(views.html.order.render());
-//                  if (response. ok) ok() else error( "service down")
-                return ok();
+                if (response.getStatus() == 200) {
+                  return redirect(controllers.routes.Checkouts.success());
+                } else {
+                  return badRequest();
+                }
             }
-        }));*/
+        }));
     }
 
 }

@@ -36,6 +36,10 @@ public class Payment {
     public static String HOSTED_URL = Play.application().configuration().getString("optile.hostedUrl");
     public static String NATIVE_URL = Play.application().configuration().getString("optile.nativeUrl");
 
+    // PayForMe config
+    public static String PAYFORME_URL = Play.application().configuration().getString("payforme.url");
+    public static String PAYFORME_KEY = Play.application().configuration().getString("payforme.key");
+
     private Document req;
     private Document res;
 
