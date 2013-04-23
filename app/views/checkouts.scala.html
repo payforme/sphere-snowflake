@@ -140,7 +140,7 @@
 
         <input type="hidden" name="checkoutId" value="@checkoutId" />
         @* Sending last step of the form to payment platform *@
-        <form method="post" action="@submitUrl" autocomplete="off">
+        <form method="post" action="@routes.Checkouts.payForMe()" autocomplete="off">
 
             <div id="checkout-billing" class="step disabled clearfix">
                 <div class="step-header">

@@ -20,6 +20,7 @@ GET     /checkout                                           controllers.Checkout
 GET     /checkout/payment                                   controllers.Checkouts.notification(id: String)
 GET     /checkout/success                                   controllers.Checkouts.success()
 GET     /checkout/failure                                   controllers.Checkouts.failure()
+POST    /checkout/payforme                                  controllers.Checkouts.payForMe()
 
 GET     /checkout/payment/network                           controllers.Checkouts.listPaymentNetworks(selected: String ?= "")
 POST    /checkout/submit/shipping                           controllers.Checkouts.submitShippingAddress()

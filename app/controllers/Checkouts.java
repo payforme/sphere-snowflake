@@ -1,7 +1,10 @@
 package controllers;
 
 import controllers.actions.Authorization;
-import forms.*;
+import forms.PayForMe;
+import forms.PaymentNetwork;
+import forms.PaymentNotification;
+import forms.SetAddress;
 import io.sphere.client.shop.model.Cart;
 import io.sphere.client.shop.model.PaymentState;
 import play.Play;
@@ -16,6 +19,8 @@ import java.util.List;
 import static play.data.Form.form;
 
 public class Checkouts extends ShopController {
+
+    private static Form<PayForMe> payForMeForm = form(PayForMe.class);
 
     public static Result show() {
         Cart cart = sphere().currentCart().fetch();
@@ -82,6 +87,22 @@ public class Checkouts extends ShopController {
         List<PaymentNetwork> paymentNetworks = payment.getApplicableNetworks();
         String referredId = payment.getReferredId();
         return ok(views.html.ajax.listPaymentNetworks.render(paymentNetworks, referredId, selected));
+    }
+    
+    public static Result payForMe() {
+//        PayForMe values = payForMeForm.bindFromRequest().get();
+//        String checkoutSummaryId = new DynamicForm().bindFromRequest().get("checkout-summary-id");
+        String checkoutId = sphere().currentCart().createCheckoutSummaryId();
+
+        try {
+            Thread.sleep(600);
+        } catch (Exception e) {
+            
+        }
+        sphere().currentCart().createOrder(checkoutId, PaymentState.BalanceDue);
+        return ok();
+        
+        
     }
 
 }
