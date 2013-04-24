@@ -1,0 +1,8 @@
+{
+  "name":"legoType"
+  ,"description":"I love lego"
+  ,"attributes":[
+    { "name":"age","label":"age","type":"text","isVariant":false,"isRequired":true,"inputHint":"SingleLine" }
+    ,{ "name":"parts","label":"parts","type":"number","isVariant":false,"isRequired":true,"inputHint":"SingleLine" }
+  ]
+}
