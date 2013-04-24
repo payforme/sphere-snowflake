@@ -5,14 +5,16 @@ This is a fully functional example web store for [SPHERE.IO](http://sphere.io).
 
 Have fun!
 
-## Deployment
+## Get data into Sphere
 
-### CloudBees
-
-To run this SPHERE.IO example web shop on [CloudBees](http://cloudbees.com) just click the button:
-
-<a href="https://grandcentral.cloudbees.com/?CB_clickstart=https://raw.github.com/commercetools/sphere-snowflake/master/deploy/cloudbees/clickstart.json"><img src="https://d3ko533tu1ozfq.cloudfront.net/clickstart/deployInstantly.png"/></a>
+```
+$ sphere -u hajo.eichler@commercetools.de login
+$ sphere project select payforme
+$ sphere types create @data/legoType.json
+$ sphere categories import data/categories.csv
+$ sphere products import data/products.csv
+```
 
 ## Development
 
-[![Build Status](https://travis-ci.org/commercetools/sphere-snowflake.png)](https://travis-ci.org/commercetools/sphere-snowflake)
+[![Build Status](https://hajo.ci.cloudbees.com/job/payforme/badge/icon)](https://hajo.ci.cloudbees.com/job/payforme/)
