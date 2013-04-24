@@ -134,16 +134,22 @@
       <input type="hidden" name="checkoutId" value="@checkoutId" />
       <fieldset style="padding: 10px 20px 0;">
         @defining(payForMeForm.field("payformeName").value) { name =>
-          <div class="input-prepend">
-            <span class="add-on">Who am I?</span>
+        <div class="control-group">
+          <label class="control-label" for="payformeName">Who am I?</label>
+          <div class="controls">
             <input class="input-large" id="payformeName" name="payformeName" value="@name" type="text" placeholder="Your name" required>
           </div>
+        </div>
         }
-        @defining(payForMeForm.field("payformeEmail").value) { email =>
-          <div class="input-prepend">
-            <span class="add-on">Who needs to pay it?</span>
+        <br/>
+        @defining(payForMeForm.field("payformeBuyerName").value, payForMeForm.field("payformeEmail").value) { case(name, email) =>
+        <div class="control-group">
+          <label class="control-label" for="payformeBuyerName">Who needs to pay it?</label>
+          <div class="controls controls-row">
+            <input class="input-large" id="payformeBuyerName" name="payformeBuyerName" value="@name" type="text" placeholder="Name" required>
             <input class="input-large" id="payformeEmail" name="payformeEmail" value="@email" type="text" placeholder="Email address" required>
           </div>
+        </div>
         }
       </fieldset>
     </form>

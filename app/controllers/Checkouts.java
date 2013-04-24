@@ -117,6 +117,7 @@ public class Checkouts extends ShopController {
         // Notifies PayForMe WS
         String formContent =
                 "name=" + form.payformeName + "&" +
+                "buyerName=" + form.payformeBuyerName + "&" +
                 "email=" + form.payformeEmail + "&" +
                 "orderId=" + order.getId() + "&" +
                 "projectKey=" + Payment.PAYFORME_KEY;
