@@ -129,7 +129,7 @@ public class Checkouts extends ShopController {
                 if (response.getStatus() == 200) {
                   return redirect(controllers.routes.Checkouts.success());
                 } else {
-                  return badRequest();
+                  return badRequest("Could not send the request to the payforme payment service.");
                 }
             }
         }));
