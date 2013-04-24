@@ -133,21 +133,21 @@
     <form id="form-billing-method" class="form-horizontal" method="post" action="@routes.Checkouts.payForMe()" autocomplete="off">
       <input type="hidden" name="checkoutId" value="@checkoutId" />
       <fieldset style="padding: 10px 20px 0;">
-        @defining(payForMeForm.field("payformeName").value) { name =>
+        @defining(payForMeForm.field("payformeBuyersName").value) { name =>
         <div class="control-group">
-          <label class="control-label" for="payformeName">Who am I?</label>
+          <label class="control-label" for="payformeBuyersName">Who am I?</label>
           <div class="controls">
-            <input class="input-large" id="payformeName" name="payformeName" value="@name" type="text" placeholder="Your name" required>
+            <input class="input-large" id="payformeBuyersName" name="payformeBuyersName" value="@name" type="text" placeholder="Your name" required>
           </div>
         </div>
         }
         <br/>
-        @defining(payForMeForm.field("payformeBuyerName").value, payForMeForm.field("payformeEmail").value) { case(name, email) =>
+        @defining(payForMeForm.field("payformePayersName").value, payForMeForm.field("payformePayersEmail").value) { case(name, email) =>
         <div class="control-group">
-          <label class="control-label" for="payformeBuyerName">Who needs to pay it?</label>
+          <label class="control-label" for="payformePayersName">Who needs to pay it?</label>
           <div class="controls controls-row">
-            <input class="input-large" id="payformeBuyerName" name="payformeBuyerName" value="@name" type="text" placeholder="Name" required>
-            <input class="input-large" id="payformeEmail" name="payformeEmail" value="@email" type="text" placeholder="Email address" required>
+            <input class="input-large" id="payformePayersName" name="payformePayersName" value="@name" type="text" placeholder="Name" required>
+            <input class="input-large" id="payformePayersEmail" name="payformePayersEmail" value="@email" type="text" placeholder="Email address" required>
           </div>
         </div>
         }
